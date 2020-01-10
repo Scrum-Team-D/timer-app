@@ -15,16 +15,16 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
-    private val START_TIME:Long = 10000
+    private val startTime:Long = 10000
 
     private var mTextViewCountDown: TextView? = null
     private var mButtonStartPause: Button? = null
-    private var getmButtonReset: Button? = null
+    private var mButtonReset: Button? = null
 
     private var mCountDownTimer: CountDownTimer? = null
     private var mTimerRunning:Boolean = false
 
-    private var mTimeLeftInMillis = START_TIME
+    private var mTimeLeftInMillis = startTime
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,33 +43,24 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        System.out.println("mTimerRunningの初期値は？ " + mTimerRunning)
+        println("mTimerRunningの初期値は？ $mTimerRunning")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         mTextViewCountDown = findViewById(R.id.text_view_countdown)
         mButtonStartPause = findViewById(R.id.button_start_pause)
-        getmButtonReset = findViewById(R.id.button_reset)
+        mButtonReset = findViewById(R.id.button_reset)
 
-        mButtonStartPause.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(v:View) {
-                System.out.println("mTimerRunningの値は？ " + mTimerRunning)
-                if (mTimerRunning)
-                {
-                    pauseTimer()
-                }
-                else
-                {
-                    startTimer()
-                }
+        mButtonStartPause.setOnClickListener(View.OnClickListener {
+            println("mTimerRunningの値は？ $mTimerRunning")
+            if (mTimerRunning) {
+                pauseTimer()
+            } else {
+                startTimer()
             }
         })
 
-        getmButtonReset.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(v:View) {
-                resetTimer()
-            }
-        })
+        mButtonReset.setOnClickListener(View.OnClickListener { resetTimer() })
 
         updateCountDownText()
 
@@ -83,37 +74,35 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onFinish() {
                 mTimerRunning = false
-                mButtonStartPause?.setText("スタート")
-                getmButtonReset?.setVisibility(View.INVISIBLE)
+                mButtonStartPause?.text = "スタート"
+                mButtonReset?.visibility = View.INVISIBLE
             }
         }.start()
         mTimerRunning = true
-        mButtonStartPause?.setText("一時停止")
-        getmButtonReset?.setVisibility(View.INVISIBLE)
+        mButtonStartPause?.text = "一時停止"
+        mButtonReset?.visibility = View.INVISIBLE
     }
 
     private fun pauseTimer() {
-        System.out.println("一時停止処理前のmTimerRunningは？ " + mTimerRunning)
-        if (mCountDownTimer != null) {
-            mCountDownTimer.cancel()
-        }
+        println("一時停止処理前のmTimerRunningは？ $mTimerRunning")
+        mCountDownTimer?.cancel()
         mTimerRunning = false
-        System.out.println("一時停止処理後のmTimerRunningは？ " + mTimerRunning)
-        mButtonStartPause?.setText("スタート")
-        getmButtonReset?.setVisibility(View.VISIBLE)
+        println("一時停止処理後のmTimerRunningは？ $mTimerRunning")
+        mButtonStartPause?.text = "スタート"
+        mButtonReset?.visibility = View.VISIBLE
     }
 
     private fun resetTimer() {
-        mTimeLeftInMillis = START_TIME
+        mTimeLeftInMillis = startTime
         updateCountDownText()
-        mButtonStartPause?.setVisibility(View.VISIBLE)
-        getmButtonReset?.setVisibility(View.INVISIBLE)
+        mButtonStartPause?.visibility = View.VISIBLE
+        mButtonReset?.visibility = View.INVISIBLE
     }
 
     private fun updateCountDownText() {
         val minutes = (mTimeLeftInMillis / 1000) as Int / 60
         val seconds = (mTimeLeftInMillis / 1000) as Int % 60
         val timerLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
-        mTextViewCountDown?.setText(timerLeftFormatted)
+        mTextViewCountDown?.text = timerLeftFormatted
     }
 }

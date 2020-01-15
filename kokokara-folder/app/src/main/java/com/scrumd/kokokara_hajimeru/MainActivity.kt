@@ -15,7 +15,7 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
-    private val startTime:Long = 10000
+    private val startTime:Long = 30000
 
     private var mTextViewCountDown: TextView? = null
     private var mButtonStartPause: Button? = null

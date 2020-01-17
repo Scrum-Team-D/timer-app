@@ -7,6 +7,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import android.os.CountDownTimer
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import kotlinx.android.synthetic.main.activity_main.*
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,5 +33,21 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        object : CountDownTimer(30000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                mTextField.setText("seconds remaining: " + millisUntilFinished / 1000)
+            }
+
+            override fun onFinish() {
+                mTextField.setText("done!")
+            }
+        }.start()
+
     }
+
 }
+
+
+

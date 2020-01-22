@@ -17,9 +17,9 @@ class MainActivity : AppCompatActivity() {
 
     private val startTime:Long = 30000
 
-    private var mTextViewCountDown: TextView? = null
-    private var mButtonStartPause: Button? = null
-    private var mButtonReset: Button? = null
+    private lateinit var mTextViewCountDown: TextView
+    private lateinit var mButtonStartPause: Button
+    private lateinit var mButtonReset: Button
 
     private var mCountDownTimer: CountDownTimer? = null
     private var mTimerRunning:Boolean = false
@@ -51,16 +51,16 @@ class MainActivity : AppCompatActivity() {
         mButtonStartPause = findViewById(R.id.button_start_pause)
         mButtonReset = findViewById(R.id.button_reset)
 
-        mButtonStartPause.setOnClickListener(View.OnClickListener {
+        mButtonStartPause.setOnClickListener {
             println("mTimerRunningの値は？ $mTimerRunning")
             if (mTimerRunning) {
                 pauseTimer()
             } else {
                 startTimer()
             }
-        })
+        }
 
-        mButtonReset.setOnClickListener(View.OnClickListener { resetTimer() })
+        mButtonReset.setOnClickListener { resetTimer() }
 
         updateCountDownText()
 
@@ -74,13 +74,13 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onFinish() {
                 mTimerRunning = false
-                mButtonStartPause?.text = "スタート"
-                mButtonReset?.visibility = View.INVISIBLE
+                mButtonStartPause.text = "スタート"
+                mButtonReset.visibility = View.INVISIBLE
             }
         }.start()
         mTimerRunning = true
-        mButtonStartPause?.text = "一時停止"
-        mButtonReset?.visibility = View.INVISIBLE
+        mButtonStartPause.text = "一時停止"
+        mButtonReset.visibility = View.INVISIBLE
     }
 
     private fun pauseTimer() {
@@ -88,21 +88,21 @@ class MainActivity : AppCompatActivity() {
         mCountDownTimer?.cancel()
         mTimerRunning = false
         println("一時停止処理後のmTimerRunningは？ $mTimerRunning")
-        mButtonStartPause?.text = "スタート"
-        mButtonReset?.visibility = View.VISIBLE
+        mButtonStartPause.text = "スタート"
+        mButtonReset.visibility = View.VISIBLE
     }
 
     private fun resetTimer() {
         mTimeLeftInMillis = startTime
         updateCountDownText()
-        mButtonStartPause?.visibility = View.VISIBLE
-        mButtonReset?.visibility = View.INVISIBLE
+        mButtonStartPause.visibility = View.VISIBLE
+        mButtonReset.visibility = View.INVISIBLE
     }
 
     private fun updateCountDownText() {
-        val minutes = (mTimeLeftInMillis / 1000) as Int / 60
-        val seconds = (mTimeLeftInMillis / 1000) as Int % 60
+        val minutes = (mTimeLeftInMillis / 1000).toInt() / 60
+        val seconds = (mTimeLeftInMillis / 1000).toInt() % 60
         val timerLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
-        mTextViewCountDown?.text = timerLeftFormatted
+        mTextViewCountDown.text = timerLeftFormatted
     }
 }
